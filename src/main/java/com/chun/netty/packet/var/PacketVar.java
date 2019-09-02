@@ -1,8 +1,10 @@
 package com.chun.netty.packet.var;
 
 import com.chun.netty.packet.command.var.CommandVar;
-import com.chun.netty.packet.request.LoginPacket;
+import com.chun.netty.packet.request.LoginRequestPacket;
+import com.chun.netty.packet.request.MessageRequestPacket;
 import com.chun.netty.packet.response.LoginResponsePacket;
+import com.chun.netty.packet.response.MessageResponsePacket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +37,11 @@ public class PacketVar {
 
     static {
         // 请求
-        PACKET_CLASS.put(CommandVar.LOGIN_COMMAND, LoginPacket.class);
+        PACKET_CLASS.put(CommandVar.LOGIN_COMMAND, LoginRequestPacket.class);
+        PACKET_CLASS.put(CommandVar.MESSAGE_COMMAND, MessageRequestPacket.class);
 
         // 响应
         RESPONSE_PACKET_CLASS.put(CommandVar.LOGIN_COMMAND, LoginResponsePacket.class);
+        RESPONSE_PACKET_CLASS.put(CommandVar.MESSAGE_COMMAND, MessageResponsePacket.class);
     }
 }

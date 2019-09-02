@@ -10,4 +10,9 @@ public class CommandVar {
      * 登入
      */
     public static final byte LOGIN_COMMAND = 1;
+
+    /**
+     * 发送消息
+     */
+    public static final byte MESSAGE_COMMAND = 2;
 }

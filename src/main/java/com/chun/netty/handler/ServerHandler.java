@@ -4,7 +4,7 @@ import com.chun.netty.packet.command.Command;
 import com.chun.netty.packet.command.CommandFactory;
 import com.chun.netty.packet.Packet;
 import com.chun.netty.packet.command.var.CommandTypeVar;
-import com.chun.netty.util.PacketUtils;
+import com.chun.netty.packet.PacketUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

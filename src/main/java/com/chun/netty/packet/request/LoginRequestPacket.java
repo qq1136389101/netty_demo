@@ -9,7 +9,7 @@ import lombok.Data;
  * @Date 2019/8/29 9:52
  */
 @Data
-public class LoginPacket extends Packet {
+public class LoginRequestPacket extends Packet {
 
     /**
      * 用户id

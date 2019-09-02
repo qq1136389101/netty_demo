@@ -1,4 +1,4 @@
-package com.chun.netty.util;
+package com.chun.netty.packet;
 
 import com.chun.netty.packet.Packet;
 import com.chun.netty.packet.command.var.CommandTypeVar;

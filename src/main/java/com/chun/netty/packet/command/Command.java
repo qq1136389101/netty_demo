@@ -11,7 +11,7 @@ import io.netty.channel.ChannelHandlerContext;
 public interface Command {
 
     /**
-     * 处理请求
+     * 服务端处理请求
      *
      * @param ctx
      * @param packet
@@ -19,7 +19,7 @@ public interface Command {
     public void run(ChannelHandlerContext ctx, Packet packet);
 
     /**
-     * 处理响应
+     * 客户端处理响应
      *
      * @param ctx
      * @param commonResponse

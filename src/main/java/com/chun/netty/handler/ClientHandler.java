@@ -1,11 +1,12 @@
 package com.chun.netty.handler;
 
+import com.chun.netty.packet.command.Command;
 import com.chun.netty.packet.command.CommandFactory;
 import com.chun.netty.packet.command.var.CommandTypeVar;
-import com.chun.netty.packet.request.LoginPacket;
+import com.chun.netty.packet.request.LoginRequestPacket;
 import com.chun.netty.packet.response.CommonResponse;
 import com.chun.netty.serializer.SerializerFactory;
-import com.chun.netty.util.PacketUtils;
+import com.chun.netty.packet.PacketUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -23,7 +24,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         System.out.println("--------------- 客户端启动成功 ---------------");
 
         // 封装登录对象
-        LoginPacket loginPacket = new LoginPacket();
+        LoginRequestPacket loginPacket = new LoginRequestPacket();
         loginPacket.setId(UUID.randomUUID().toString());
         loginPacket.setUserName("zhangsan");
         loginPacket.setPassword("123456");
@@ -39,9 +40,10 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
         // 解析响应对象
         CommonResponse commonResponse = (CommonResponse) PacketUtils.decode(byteBuf, CommandTypeVar.RESPONSE);
-
+        System.out.println(commonResponse.getCommand());
         // 处理响应
-        CommandFactory.getCommand(commonResponse.getCommand()).runResponse(ctx, commonResponse);
+        Command command = CommandFactory.getCommand(commonResponse.getCommand());
+        command.runResponse(ctx, commonResponse);
     }
 
     /**

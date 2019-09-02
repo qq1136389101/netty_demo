@@ -1,9 +1,14 @@
 package com.chun.netty;
 
 import com.chun.netty.handler.ClientHandler;
+import com.chun.netty.packet.PacketUtils;
+import com.chun.netty.packet.request.MessageRequestPacket;
+import com.chun.netty.serializer.SerializerFactory;
+import com.chun.netty.util.LoginUtils;
 import com.chun.netty.var.CommonVar;
 import com.chun.test.FirstClientHandler;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -12,6 +17,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -42,6 +48,15 @@ public class Client {
         Channel channel = channelFuture.channel();
     }
 
+    /**
+     * 连接服务端
+     *
+     * @param bootstrap
+     * @param host
+     * @param port
+     * @param retry 重试次数
+     * @return
+     */
     public static ChannelFuture connect(Bootstrap bootstrap, String host, int port, int retry){
         System.out.println("开始重连....");
         return bootstrap.connect(host, port).addListener(new GenericFutureListener<Future<? super Void>>() {
@@ -49,6 +64,10 @@ public class Client {
             public void operationComplete(Future<? super Void> future) throws Exception {
                 if(future.isSuccess()){
                     System.out.println("连接成功");
+
+                    // 连接成功后启动控制台线程
+                    Channel channel = ((ChannelFuture) future).channel();
+                    startConsoleThread(channel);
                 }else if(retry == 0){
                     System.out.println("连接次数已用完");
                 }else{
@@ -61,5 +80,23 @@ public class Client {
                 }
             }
         });
+    }
+
+    private static void startConsoleThread(Channel channel) {
+        new Thread(() -> {
+            while (!Thread.interrupted()){
+                // 判断是否登录
+                if(LoginUtils.hasLogin(channel)){
+                    System.out.println("请输入消息发送至服务器: ");
+                    Scanner scanner = new Scanner(System.in);
+                    String line = scanner.nextLine();
+
+                    MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
+                    messageRequestPacket.setMessage(line);
+                    ByteBuf byteBuf = PacketUtils.encode(messageRequestPacket, SerializerFactory.getSerializer());
+                    channel.writeAndFlush(byteBuf);
+                }
+            }
+        }).start();
     }
 }

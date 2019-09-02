@@ -1,5 +1,6 @@
 package com.chun.netty.packet.command;
 
+import com.chun.netty.packet.command.var.CommandTypeVar;
 import com.chun.netty.packet.command.var.CommandVar;
 
 /**
@@ -13,6 +14,10 @@ public class CommandFactory {
      */
     private static LoginCommand loginCommand = new LoginCommand();
 
+    /**
+     * 消息命令
+     */
+    private static MessageCommand messageCommand = new MessageCommand();
 
     /**
      * 根据指令获取对应的命令
@@ -24,9 +29,12 @@ public class CommandFactory {
         switch (command){
             case CommandVar.LOGIN_COMMAND:
                 return loginCommand;
+            case CommandVar.MESSAGE_COMMAND:
+                return messageCommand;
             default:
                 break;
         }
         return null;
     }
+
 }
