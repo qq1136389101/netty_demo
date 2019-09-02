@@ -1,7 +1,8 @@
 package com.chun.netty.packet.var;
 
-import com.chun.netty.command.var.CommandVar;
+import com.chun.netty.packet.command.var.CommandVar;
 import com.chun.netty.packet.request.LoginPacket;
+import com.chun.netty.packet.response.LoginResponsePacket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +24,20 @@ public class PacketVar {
     public static final byte VERSION = 1;
 
     /**
-     * 命令与数据包映射常量
+     * 请求命令与数据包映射常量
      */
     public final static Map PACKET_CLASS = new HashMap();
+
+    /**
+     * 响应命令与数据包映射常量
+     */
+    public final static Map RESPONSE_PACKET_CLASS = new HashMap();
+
     static {
+        // 请求
         PACKET_CLASS.put(CommandVar.LOGIN_COMMAND, LoginPacket.class);
+
+        // 响应
+        RESPONSE_PACKET_CLASS.put(CommandVar.LOGIN_COMMAND, LoginResponsePacket.class);
     }
 }

@@ -1,4 +1,4 @@
-package com.chun.netty.command.var;
+package com.chun.netty.packet.command.var;
 
 /**
  * @Author chun

@@ -1,8 +1,5 @@
 package com.chun.netty.packet;
 
-import com.chun.netty.command.Command;
-import com.chun.netty.command.CommandFactory;
-
 /**
  * 自定义的包协议
  * 1. 魔术    4字节

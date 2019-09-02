@@ -1,12 +1,14 @@
 package com.chun.netty.handler;
 
+import com.chun.netty.packet.command.CommandFactory;
+import com.chun.netty.packet.command.var.CommandTypeVar;
 import com.chun.netty.packet.request.LoginPacket;
+import com.chun.netty.packet.response.CommonResponse;
 import com.chun.netty.serializer.SerializerFactory;
 import com.chun.netty.util.PacketUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.CharsetUtil;
 
 import java.util.UUID;
 
@@ -24,8 +26,9 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         LoginPacket loginPacket = new LoginPacket();
         loginPacket.setId(UUID.randomUUID().toString());
         loginPacket.setUserName("zhangsan");
-        loginPacket.setPassword("1234567");
+        loginPacket.setPassword("123456");
 
+        // 发送登入请求
         ByteBuf byteBuf = PacketUtils.encode(loginPacket, SerializerFactory.getSerializer());
         ctx.channel().writeAndFlush(byteBuf);
     }
@@ -33,11 +36,16 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf byteBuf = (ByteBuf) msg;
-        System.out.println("接收到服务端的数据:" + byteBuf.toString(CharsetUtil.UTF_8));
+
+        // 解析响应对象
+        CommonResponse commonResponse = (CommonResponse) PacketUtils.decode(byteBuf, CommandTypeVar.RESPONSE);
+
+        // 处理响应
+        CommandFactory.getCommand(commonResponse.getCommand()).runResponse(ctx, commonResponse);
     }
 
     /**
-     * 发送消息给服务端
+     * 发送字符串消息给服务端
      *
      * @param ctx
      * @param msg   消息内容

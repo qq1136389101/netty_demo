@@ -1,13 +1,13 @@
 package com.chun.netty.handler;
 
-import com.chun.netty.command.Command;
-import com.chun.netty.command.CommandFactory;
+import com.chun.netty.packet.command.Command;
+import com.chun.netty.packet.command.CommandFactory;
 import com.chun.netty.packet.Packet;
+import com.chun.netty.packet.command.var.CommandTypeVar;
 import com.chun.netty.util.PacketUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.CharsetUtil;
 
 /**
  * @Author chun
@@ -25,7 +25,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         ByteBuf byteBuf = (ByteBuf) msg;
 
         // 解码
-        Packet packet = PacketUtils.decode(byteBuf);
+        Packet packet = PacketUtils.decode(byteBuf, CommandTypeVar.REQUEST);
         Command command = CommandFactory.getCommand(packet.getCommand());
         command.run(ctx, packet);
     }

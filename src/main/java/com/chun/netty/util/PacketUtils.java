@@ -1,6 +1,7 @@
 package com.chun.netty.util;
 
 import com.chun.netty.packet.Packet;
+import com.chun.netty.packet.command.var.CommandTypeVar;
 import com.chun.netty.packet.var.PacketVar;
 import com.chun.netty.serializer.Serializer;
 import com.chun.netty.serializer.SerializerFactory;
@@ -57,7 +58,7 @@ public class PacketUtils {
      * @param byteBuf   字节码
      * @return
      */
-    public static Packet decode(ByteBuf byteBuf){
+    public static Packet decode(ByteBuf byteBuf, int commandType){
         // 跳过魔术变量
         byteBuf.skipBytes(4);
 
@@ -78,7 +79,7 @@ public class PacketUtils {
         byteBuf.readBytes(bytes);
 
         Serializer serializer = SerializerFactory.getSerializer(serializerAlgorithm);
-        Class<? extends Packet> clazz = getPacketClass(command);
+        Class<? extends Packet> clazz = getPacketClass(command, commandType);
         if(serializer != null && clazz != null){
             return serializer.deserialize(clazz, bytes);
         }
@@ -91,7 +92,11 @@ public class PacketUtils {
      * @param command   指令
      * @return
      */
-    public static Class<? extends Packet> getPacketClass(byte command){
-        return (Class) PacketVar.PACKET_CLASS.get(command);
+    public static Class<? extends Packet> getPacketClass(byte command, int commondType){
+        if(commondType == CommandTypeVar.REQUEST){
+            return (Class) PacketVar.PACKET_CLASS.get(command);
+        }else{
+            return (Class) PacketVar.RESPONSE_PACKET_CLASS.get(command);
+        }
     }
 }

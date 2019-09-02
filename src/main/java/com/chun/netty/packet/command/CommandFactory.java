@@ -1,6 +1,6 @@
-package com.chun.netty.command;
+package com.chun.netty.packet.command;
 
-import com.chun.netty.command.var.CommandVar;
+import com.chun.netty.packet.command.var.CommandVar;
 
 /**
  * @Author chun

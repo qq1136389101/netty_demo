@@ -1,8 +1,6 @@
 package com.chun.netty.packet.response;
 
-import com.chun.netty.command.var.CommandVar;
-import com.chun.netty.packet.Packet;
-import com.chun.netty.packet.var.PacketVar;
+import com.chun.netty.packet.command.var.CommandVar;
 import lombok.Data;
 
 /**
