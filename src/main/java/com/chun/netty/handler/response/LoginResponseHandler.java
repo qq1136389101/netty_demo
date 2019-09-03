@@ -27,6 +27,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         // 发送登入请求
         System.out.println("向服务端发送登录请求");
         ctx.channel().writeAndFlush(loginPacket);
+        ctx.fireChannelActive();
     }
 
     @Override

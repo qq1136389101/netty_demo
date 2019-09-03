@@ -3,12 +3,14 @@ package com.chun.netty;
 import com.chun.netty.handler.*;
 import com.chun.netty.handler.request.LoginRequestHandler;
 import com.chun.netty.handler.request.MessageRequestHandler;
+import com.chun.netty.packet.PacketSpliter;
 import com.chun.netty.var.CommonVar;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -31,6 +33,9 @@ public class Server {
 //                    nioSocketChannel.pipeline().addLast(new ServerHandler());
 
                     // 责任链方式
+                    // 拆包粘包解决， 注释该行会可能会解析 byteBuf 失败, 导致数组下标异常
+                    nioSocketChannel.pipeline().addLast(new PacketSpliter());
+
                     nioSocketChannel.pipeline().addLast(new RequestPacketDecoder());
                     nioSocketChannel.pipeline().addLast(new PacketEncoder());
                     nioSocketChannel.pipeline().addLast(new LoginRequestHandler());

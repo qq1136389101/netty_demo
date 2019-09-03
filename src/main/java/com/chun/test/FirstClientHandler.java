@@ -21,7 +21,9 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端开始写数据");
         String msg = "你好， 我是客户端";
-        sendMsg(ctx, msg);
+        for (int i = 0; i < 1000; i++) {
+            sendMsg(ctx, msg);
+        }
     }
 
     /**

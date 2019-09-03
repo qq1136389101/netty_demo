@@ -1,10 +1,10 @@
 package com.chun.netty;
 
-import com.chun.netty.handler.RequestPacketDecoder;
 import com.chun.netty.handler.PacketEncoder;
 import com.chun.netty.handler.ResponsePacketDecoder;
 import com.chun.netty.handler.response.LoginResponseHandler;
 import com.chun.netty.handler.response.MessageResponseHandler;
+import com.chun.netty.packet.PacketSpliter;
 import com.chun.netty.packet.PacketUtils;
 import com.chun.netty.packet.request.MessageRequestPacket;
 import com.chun.netty.serializer.SerializerFactory;
@@ -12,7 +12,6 @@ import com.chun.netty.util.LoginUtils;
 import com.chun.netty.var.CommonVar;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -48,6 +47,9 @@ public class Client {
 //                        nioSocketChannel.pipeline().addLast(new ClientHandler());
 
                         // 责任链模式
+                        // 拆包粘包解决， 注释该行会可能会解析 byteBuf 失败, 导致数组下标异常
+                        socketChannel.pipeline().addLast(new PacketSpliter());
+
                         socketChannel.pipeline().addLast(new ResponsePacketDecoder());
                         socketChannel.pipeline().addLast(new PacketEncoder());
                         socketChannel.pipeline().addLast(new LoginResponseHandler());

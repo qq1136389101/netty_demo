@@ -18,7 +18,7 @@ public class FirstServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("服务端收到数据: " + buf.toString(Charset.forName("utf-8")));
 
         // 写数据给客户端
-        sendMsg(ctx, "你好，我是服务端");
+//        sendMsg(ctx, "你好，我是服务端");
     }
 
     /**
