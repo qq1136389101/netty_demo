@@ -27,11 +27,6 @@ public class Server {
                     nioSocketChannel.pipeline().addLast(new InboundHandlerA());
                     nioSocketChannel.pipeline().addLast(new InboundHandlerB());
                     nioSocketChannel.pipeline().addLast(new InboundHandlerC());
-
-                    // outBound 处理数据逻辑
-                    nioSocketChannel.pipeline().addLast(new OutboundHandlerA());
-                    nioSocketChannel.pipeline().addLast(new OutboundHandlerB());
-                    nioSocketChannel.pipeline().addLast(new OutboundHandlerC());
                 }
             })
             .bind(CommonVar.PORT);
