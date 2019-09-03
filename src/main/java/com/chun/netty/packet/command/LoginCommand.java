@@ -8,6 +8,7 @@ import com.chun.netty.serializer.SerializerFactory;
 import com.chun.netty.packet.PacketUtils;
 import com.chun.netty.util.LoginUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -33,7 +34,7 @@ public class LoginCommand implements Command {
             }
 
             // 发送响应
-            ByteBuf byteBuf = PacketUtils.encode(loginResponsePacket, SerializerFactory.getSerializer());
+            ByteBuf byteBuf = PacketUtils.encode(loginResponsePacket);
             ctx.channel().writeAndFlush(byteBuf);
         }
     }

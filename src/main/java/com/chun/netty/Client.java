@@ -1,14 +1,18 @@
 package com.chun.netty;
 
-import com.chun.netty.handler.ClientHandler;
+import com.chun.netty.handler.RequestPacketDecoder;
+import com.chun.netty.handler.PacketEncoder;
+import com.chun.netty.handler.ResponsePacketDecoder;
+import com.chun.netty.handler.response.LoginResponseHandler;
+import com.chun.netty.handler.response.MessageResponseHandler;
 import com.chun.netty.packet.PacketUtils;
 import com.chun.netty.packet.request.MessageRequestPacket;
 import com.chun.netty.serializer.SerializerFactory;
 import com.chun.netty.util.LoginUtils;
 import com.chun.netty.var.CommonVar;
-import com.chun.test.FirstClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -39,8 +43,15 @@ public class Client {
                 .channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
-                    protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-                        nioSocketChannel.pipeline().addLast(new ClientHandler());
+                    protected void initChannel(NioSocketChannel socketChannel) throws Exception {
+                        // 原始方式
+//                        nioSocketChannel.pipeline().addLast(new ClientHandler());
+
+                        // 责任链模式
+                        socketChannel.pipeline().addLast(new ResponsePacketDecoder());
+                        socketChannel.pipeline().addLast(new PacketEncoder());
+                        socketChannel.pipeline().addLast(new LoginResponseHandler());
+                        socketChannel.pipeline().addLast(new MessageResponseHandler());
                     }
                 });
 
@@ -93,6 +104,7 @@ public class Client {
 
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMessage(line);
+
                     ByteBuf byteBuf = PacketUtils.encode(messageRequestPacket, SerializerFactory.getSerializer());
                     channel.writeAndFlush(byteBuf);
                 }

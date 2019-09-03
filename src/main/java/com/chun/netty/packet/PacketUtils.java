@@ -15,33 +15,33 @@ import io.netty.buffer.ByteBufAllocator;
  */
 public class PacketUtils {
 
-    /**
-     * 默认编码方式
-     */
     private static final byte DEFAULT_SERIALIZER = SerializerAlgorithmVar.JSON;
 
-    /**
-     * 默认编码
-     *
-     * @param packet
-     * @return
-     */
-    public ByteBuf encode(Packet packet){
+    public static ByteBuf encode(Packet packet){
        return encode(packet, SerializerFactory.getSerializer(DEFAULT_SERIALIZER));
+    }
+
+    public static ByteBuf encode(Packet packet, Serializer serializer){
+        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+        return encode(byteBuf, packet, serializer);
+    }
+
+    public static ByteBuf encode(ByteBuf byteBuf, Packet packet){
+        return encode(byteBuf, packet, SerializerFactory.getSerializer(DEFAULT_SERIALIZER));
     }
 
     /**
      * 编码
      *
-     * @param packet    包对象
-     * @param serializer    序列化方式
+     * @param byteBuf
+     * @param packet
+     * @param serializer
      * @return
      */
-    public static ByteBuf encode(Packet packet, Serializer serializer){
+    public static ByteBuf encode(ByteBuf byteBuf, Packet packet, Serializer serializer){
         // 通过 packet 中的算法将 packet 转换为 byte[]
         byte[] bytes = serializer.serialize(packet);
 
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         byteBuf.writeInt(PacketVar.MAGIC_NUMBER);
         byteBuf.writeByte(PacketVar.VERSION);
         byteBuf.writeByte(serializer.getSerializerAlgorithm());

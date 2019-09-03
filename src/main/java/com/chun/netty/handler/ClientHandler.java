@@ -8,6 +8,7 @@ import com.chun.netty.packet.response.CommonResponse;
 import com.chun.netty.serializer.SerializerFactory;
 import com.chun.netty.packet.PacketUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -30,7 +31,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         loginPacket.setPassword("123456");
 
         // 发送登入请求
-        ByteBuf byteBuf = PacketUtils.encode(loginPacket, SerializerFactory.getSerializer());
+        ByteBuf byteBuf = PacketUtils.encode(loginPacket);
         ctx.channel().writeAndFlush(byteBuf);
     }
 

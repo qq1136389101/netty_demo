@@ -10,6 +10,7 @@ import com.chun.netty.packet.response.MessageResponsePacket;
 import com.chun.netty.serializer.SerializerFactory;
 import com.chun.netty.util.LoginUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -28,7 +29,7 @@ public class MessageCommand implements Command {
 
             MessageResponsePacket messageResponsePacket
                     = new MessageResponsePacket(200, "服务端回复【" + messageRequestPacket.getMessage() + "】");
-            ByteBuf byteBuf = PacketUtils.encode(messageResponsePacket, SerializerFactory.getSerializer());
+            ByteBuf byteBuf = PacketUtils.encode(messageResponsePacket);
             ctx.channel().writeAndFlush(byteBuf);
         }
     }

@@ -1,9 +1,9 @@
 package com.chun.netty;
 
-import com.chun.netty.handler.ClientHandler;
-import com.chun.netty.handler.ServerHandler;
+import com.chun.netty.handler.*;
+import com.chun.netty.handler.request.LoginRequestHandler;
+import com.chun.netty.handler.request.MessageRequestHandler;
 import com.chun.netty.var.CommonVar;
-import com.chun.test.FirstServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -27,7 +27,14 @@ public class Server {
             .childHandler(new ChannelInitializer<NioSocketChannel>() {
                 @Override
                 protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-                    nioSocketChannel.pipeline().addLast(new ServerHandler());
+                    // 原始方式
+//                    nioSocketChannel.pipeline().addLast(new ServerHandler());
+
+                    // 责任链方式
+                    nioSocketChannel.pipeline().addLast(new RequestPacketDecoder());
+                    nioSocketChannel.pipeline().addLast(new PacketEncoder());
+                    nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+                    nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
                 }
             });
 
