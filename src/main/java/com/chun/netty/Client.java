@@ -99,7 +99,7 @@ public class Client {
         new Thread(() -> {
             while (!Thread.interrupted()){
                 // 判断是否登录
-                if(LoginUtils.hasLogin(channel)){
+//                if(LoginUtils.hasLogin(channel)){
                     System.out.println("请输入消息发送至服务器: ");
                     Scanner scanner = new Scanner(System.in);
                     String line = scanner.nextLine();
@@ -107,9 +107,8 @@ public class Client {
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMessage(line);
 
-                    ByteBuf byteBuf = PacketUtils.encode(messageRequestPacket, SerializerFactory.getSerializer());
-                    channel.writeAndFlush(byteBuf);
-                }
+                    channel.writeAndFlush(messageRequestPacket);
+//                }
             }
         }).start();
     }

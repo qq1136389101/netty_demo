@@ -1,8 +1,10 @@
 package com.chun.netty.handler.response;
 
 import com.chun.netty.packet.request.LoginRequestPacket;
+import com.chun.netty.packet.request.MessageRequestPacket;
 import com.chun.netty.packet.response.LoginResponsePacket;
 import com.chun.netty.util.LoginUtils;
+import com.chun.netty.var.AttributeVar;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -34,10 +36,8 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginResponsePacket loginResponsePacket) throws Exception {
         System.out.println("接收到服务端的登录响应");
         if(loginResponsePacket.getCode() == 200){
-            LoginUtils.login(channelHandlerContext.channel());
             System.out.println("登录成功");
         }else{
-            LoginUtils.logout(channelHandlerContext.channel());
             System.out.println("登录失败: " + loginResponsePacket.getMsg());
         }
     }

@@ -4,6 +4,7 @@ import com.chun.netty.packet.PacketUtils;
 import com.chun.netty.packet.request.LoginRequestPacket;
 import com.chun.netty.packet.response.LoginResponsePacket;
 import com.chun.netty.serializer.SerializerFactory;
+import com.chun.netty.util.LoginUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -23,9 +24,11 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         if(validate(loginRequestPacket)){
             // 校验成功
             loginResponsePacket = new LoginResponsePacket(200, "登录成功");
+            LoginUtils.login(channelHandlerContext.channel());
         }else{
             // 校验失败
             loginResponsePacket = new LoginResponsePacket(401, "账号密码错误");
+            LoginUtils.logout(channelHandlerContext.channel());
         }
 
         // 发送响应

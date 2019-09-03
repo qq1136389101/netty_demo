@@ -39,6 +39,10 @@ public class Server {
                     nioSocketChannel.pipeline().addLast(new RequestPacketDecoder());
                     nioSocketChannel.pipeline().addLast(new PacketEncoder());
                     nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+
+                    // AuthHandler 以下的 handler 都必须登录后才会执行
+                    nioSocketChannel.pipeline().addLast(new AuthHandler());
+
                     nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
                 }
             });
