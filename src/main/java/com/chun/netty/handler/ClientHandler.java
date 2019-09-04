@@ -41,7 +41,6 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
         // 解析响应对象
         CommonResponse commonResponse = (CommonResponse) PacketUtils.decode(byteBuf, CommandTypeVar.RESPONSE);
-        System.out.println(commonResponse.getCommand());
         // 处理响应
         Command command = CommandFactory.getCommand(commonResponse.getCommand());
         command.runResponse(ctx, commonResponse);

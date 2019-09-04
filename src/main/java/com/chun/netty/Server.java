@@ -3,6 +3,7 @@ package com.chun.netty;
 import com.chun.netty.handler.*;
 import com.chun.netty.handler.request.CreateGroupRequestHandler;
 import com.chun.netty.handler.request.LoginRequestHandler;
+import com.chun.netty.handler.request.LogoutRequestHandler;
 import com.chun.netty.handler.request.MessageRequestHandler;
 import com.chun.netty.packet.PacketSpliter;
 import com.chun.netty.var.CommonVar;
@@ -46,6 +47,7 @@ public class Server {
 
                     nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
                     nioSocketChannel.pipeline().addLast(new CreateGroupRequestHandler());
+                    nioSocketChannel.pipeline().addLast(new LogoutRequestHandler());
                 }
             });
 

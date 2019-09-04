@@ -48,7 +48,7 @@ public class SessionUtils {
      * @return
      */
     public static boolean hasLogin(Channel channel){
-        return channel.hasAttr(AttributeVar.SESSION);
+        return getSession(channel) != null;
     }
 
     /**
@@ -58,7 +58,7 @@ public class SessionUtils {
      * @return
      */
     public static Session getSession(Channel channel){
-        return hasLogin(channel) ? channel.attr(AttributeVar.SESSION).get() : null;
+        return channel.attr(AttributeVar.SESSION).get();
     }
 
     /**

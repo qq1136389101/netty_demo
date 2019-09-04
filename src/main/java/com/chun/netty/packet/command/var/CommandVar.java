@@ -20,4 +20,9 @@ public class CommandVar {
      * 创建群
      */
     public static final byte CREATE_GROUP_COMMAND = 3;
+
+    /**
+     * 退出登录
+     */
+    public static final byte LOGOUT_COMMAND = 4;
 }

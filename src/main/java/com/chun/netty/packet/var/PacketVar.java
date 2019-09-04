@@ -3,9 +3,11 @@ package com.chun.netty.packet.var;
 import com.chun.netty.packet.command.var.CommandVar;
 import com.chun.netty.packet.request.CreateGroupRequestPacket;
 import com.chun.netty.packet.request.LoginRequestPacket;
+import com.chun.netty.packet.request.LogoutRequestPacket;
 import com.chun.netty.packet.request.MessageRequestPacket;
 import com.chun.netty.packet.response.CreateGroupResponsePacket;
 import com.chun.netty.packet.response.LoginResponsePacket;
+import com.chun.netty.packet.response.LogoutResponsePacket;
 import com.chun.netty.packet.response.MessageResponsePacket;
 
 import java.util.HashMap;
@@ -42,10 +44,12 @@ public class PacketVar {
         PACKET_CLASS.put(CommandVar.LOGIN_COMMAND, LoginRequestPacket.class);
         PACKET_CLASS.put(CommandVar.MESSAGE_COMMAND, MessageRequestPacket.class);
         PACKET_CLASS.put(CommandVar.CREATE_GROUP_COMMAND, CreateGroupRequestPacket.class);
+        PACKET_CLASS.put(CommandVar.LOGOUT_COMMAND, LogoutRequestPacket.class);
 
         // 响应
         RESPONSE_PACKET_CLASS.put(CommandVar.LOGIN_COMMAND, LoginResponsePacket.class);
         RESPONSE_PACKET_CLASS.put(CommandVar.MESSAGE_COMMAND, MessageResponsePacket.class);
         RESPONSE_PACKET_CLASS.put(CommandVar.CREATE_GROUP_COMMAND, CreateGroupResponsePacket.class);
+        RESPONSE_PACKET_CLASS.put(CommandVar.LOGOUT_COMMAND, LogoutResponsePacket.class);
     }
 }

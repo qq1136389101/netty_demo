@@ -6,5 +6,18 @@ package com.chun.netty.console;
  */
 public class ConsoleCommandVar {
 
+    /**
+     * 创建群聊
+     */
     public static final String CREATE_GROUP = "1";
+
+    /**
+     * 发送消息
+     */
+    public static final String SEND_MSG = "2";
+
+    /**
+     * 退出登录
+     */
+    public static final String LOGOUT = "3";
 }

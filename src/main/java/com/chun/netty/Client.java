@@ -6,6 +6,7 @@ import com.chun.netty.handler.PacketEncoder;
 import com.chun.netty.handler.ResponsePacketDecoder;
 import com.chun.netty.handler.response.CreateGroupResponseHandler;
 import com.chun.netty.handler.response.LoginResponseHandler;
+import com.chun.netty.handler.response.LogoutResponseHandler;
 import com.chun.netty.handler.response.MessageResponseHandler;
 import com.chun.netty.packet.PacketSpliter;
 import com.chun.netty.packet.request.LoginRequestPacket;
@@ -57,6 +58,7 @@ public class Client {
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
                         socketChannel.pipeline().addLast(new MessageResponseHandler());
                         socketChannel.pipeline().addLast(new CreateGroupResponseHandler());
+                        socketChannel.pipeline().addLast(new LogoutResponseHandler());
                     }
                 });
 
@@ -118,11 +120,14 @@ public class Client {
                     // 发送登录请求后，停顿一段时间，等待登录响应再执行 while
                     waitForLoginResponse();
                 }else{
+                    System.out.println("请输入操作命令: 1【创建群聊】, 2【发送消息】, 3【退出登录】");
                     Scanner scanner = new Scanner(System.in);
                     String line = scanner.nextLine();
 
                     ConsoleCommand command = ConsoleCommandFactory.getCommand(line);
                     command.exec(scanner, channel);
+
+                    waitForLoginResponse();
                 }
             }
         }).start();
