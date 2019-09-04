@@ -26,6 +26,7 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, CreateGroupRequestPacket createGroupRequestPacket) throws Exception {
+        String groupName = createGroupRequestPacket.getGroupName();
         List<String> userNames = new ArrayList(Arrays.asList(createGroupRequestPacket.getUserNames()));
 
         // 创建 channelGroup 分组
@@ -38,6 +39,9 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
                 userNames.remove(userNames.get(i));
             }
         }
+
+        // 保存群信息
+        SessionUtils.addChannelGroup(groupName, channels);
 
         // 创建群聊后通知所有群聊里的用户
         CreateGroupResponsePacket createGroupResponsePacket = new CreateGroupResponsePacket();

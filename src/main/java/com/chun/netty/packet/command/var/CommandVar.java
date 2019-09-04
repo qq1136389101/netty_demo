@@ -25,4 +25,9 @@ public class CommandVar {
      * 退出登录
      */
     public static final byte LOGOUT_COMMAND = 4;
+
+    /**
+     * 列出群成员
+     */
+    public static final byte LIST_GROUP = 5;
 }

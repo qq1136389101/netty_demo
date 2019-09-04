@@ -9,20 +9,16 @@ import lombok.Data;
  * @Date 2019/8/29 9:52
  */
 @Data
-public class CreateGroupRequestPacket extends Packet {
+public class ListGroupRequestPacket extends Packet {
 
     /**
      * 群名
      */
     private String groupName;
 
-    /**
-     * 用户名集合
-     */
-    private String[] userNames;
 
     @Override
     public byte getCommand() {
-        return CommandVar.CREATE_GROUP_COMMAND;
+        return CommandVar.LIST_GROUP;
     }
 }

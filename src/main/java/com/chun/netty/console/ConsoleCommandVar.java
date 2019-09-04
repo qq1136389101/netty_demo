@@ -20,4 +20,9 @@ public class ConsoleCommandVar {
      * 退出登录
      */
     public static final String LOGOUT = "3";
+
+    /**
+     * 列出群聊人员
+     */
+    public static final String LIST_GROUP = "4";
 }

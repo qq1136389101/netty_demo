@@ -2,6 +2,7 @@ package com.chun.netty.util;
 
 import com.chun.netty.var.AttributeVar;
 import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,11 @@ public class SessionUtils {
      * 保存登录的用户的 channel 信息
      */
     private static final Map<String, Channel> userNameChannel = new HashMap<>();
+
+    /**
+     * 保存群聊的 channelGroup 信息
+     */
+    private static final Map<String, ChannelGroup> channelGroupMap = new HashMap<>();
 
     /**
      * 登录，先将用户信息保存到 channel, 然后再将 channel 保存到 userNameChannel 里
@@ -69,5 +75,25 @@ public class SessionUtils {
      */
     public static Channel getChannelByUserName(String userName){
         return userNameChannel.get(userName);
+    }
+
+    /**
+     * 保存群聊
+     *
+     * @param groupName 群名
+     * @param channels
+     */
+    public static void addChannelGroup(String groupName, ChannelGroup channels){
+        channelGroupMap.put(groupName, channels);
+    }
+
+    /**
+     * 获取群聊的 channelGroup
+     *
+     * @param groupName
+     * @return
+     */
+    public static ChannelGroup getChannelGroupByGroupName(String groupName){
+        return channelGroupMap.get(groupName);
     }
 }
