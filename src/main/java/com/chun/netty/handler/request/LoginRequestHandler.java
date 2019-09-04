@@ -5,6 +5,9 @@ import com.chun.netty.packet.request.LoginRequestPacket;
 import com.chun.netty.packet.response.LoginResponsePacket;
 import com.chun.netty.serializer.SerializerFactory;
 import com.chun.netty.util.LoginUtils;
+import com.chun.netty.util.Session;
+import com.chun.netty.util.SessionUtils;
+import com.chun.netty.var.AttributeVar;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -22,13 +25,18 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         // 封装响应
         LoginResponsePacket loginResponsePacket = null;
         if(validate(loginRequestPacket)){
+            // 保存登录信息
+            Session session = new Session();
+            session.setId(loginRequestPacket.getId());
+            session.setUserName(loginRequestPacket.getUserName());
+            SessionUtils.login(session, channelHandlerContext.channel());
+
             // 校验成功
-            loginResponsePacket = new LoginResponsePacket(200, "登录成功");
-            LoginUtils.login(channelHandlerContext.channel());
+            loginResponsePacket = new LoginResponsePacket(200, "登录成功", session);
         }else{
             // 校验失败
             loginResponsePacket = new LoginResponsePacket(401, "账号密码错误");
-            LoginUtils.logout(channelHandlerContext.channel());
+            SessionUtils.logout(channelHandlerContext.channel());
         }
 
         // 发送响应
@@ -43,10 +51,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
      * @return
      */
     private boolean validate(LoginRequestPacket loginPacket){
-        if(loginPacket.getUserName().equals("zhangsan") && loginPacket.getPassword().equals("123456")){
-            return true;
-        }else{
-            return false;
-        }
+        return true;
     }
 }

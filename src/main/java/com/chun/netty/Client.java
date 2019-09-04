@@ -6,9 +6,13 @@ import com.chun.netty.handler.response.LoginResponseHandler;
 import com.chun.netty.handler.response.MessageResponseHandler;
 import com.chun.netty.packet.PacketSpliter;
 import com.chun.netty.packet.PacketUtils;
+import com.chun.netty.packet.request.LoginRequestPacket;
 import com.chun.netty.packet.request.MessageRequestPacket;
 import com.chun.netty.serializer.SerializerFactory;
 import com.chun.netty.util.LoginUtils;
+import com.chun.netty.util.Session;
+import com.chun.netty.util.SessionUtils;
+import com.chun.netty.var.AttributeVar;
 import com.chun.netty.var.CommonVar;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -21,6 +25,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -98,18 +103,39 @@ public class Client {
     private static void startConsoleThread(Channel channel) {
         new Thread(() -> {
             while (!Thread.interrupted()){
-                // 判断是否登录
-//                if(LoginUtils.hasLogin(channel)){
-                    System.out.println("请输入消息发送至服务器: ");
+                if(!SessionUtils.hasLogin(channel)){
+                    // 登录
+                    System.out.println("请输入用户名登录: ");
+                    Scanner scanner = new Scanner(System.in);
+                    String line = scanner.nextLine();
+
+                    LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+                    loginRequestPacket.setId(UUID.randomUUID().toString());
+                    loginRequestPacket.setUserName(line);
+                    loginRequestPacket.setPassword("123456");
+
+                    channel.writeAndFlush(loginRequestPacket);
+                    channel.attr(AttributeVar.LOGIN).set(true);
+
+                    // 发送登录请求后，停顿一段时间，等待登录响应再执行 while
+                    waitForLoginResponse();
+                }else{
+                    // 聊天
                     Scanner scanner = new Scanner(System.in);
                     String line = scanner.nextLine();
 
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMessage(line);
-
                     channel.writeAndFlush(messageRequestPacket);
-//                }
+                }
             }
         }).start();
+    }
+
+    private static void waitForLoginResponse() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {
+        }
     }
 }

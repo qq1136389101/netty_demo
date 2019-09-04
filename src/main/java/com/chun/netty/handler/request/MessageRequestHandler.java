@@ -1,12 +1,10 @@
 package com.chun.netty.handler.request;
 
-import com.chun.netty.packet.PacketUtils;
-import com.chun.netty.packet.request.LoginRequestPacket;
 import com.chun.netty.packet.request.MessageRequestPacket;
-import com.chun.netty.packet.response.LoginResponsePacket;
 import com.chun.netty.packet.response.MessageResponsePacket;
-import com.chun.netty.serializer.SerializerFactory;
-import io.netty.buffer.ByteBuf;
+import com.chun.netty.util.Session;
+import com.chun.netty.util.SessionUtils;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -18,12 +16,24 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageRequestPacket messageRequestPacket) throws Exception {
-        System.out.println("收到客户端消息:" + messageRequestPacket.getMessage());
+        String[] message = messageRequestPacket.getMessage().split(" ");
+        String userName = message[0];
+        String messageDetail = message[1];
 
-        MessageResponsePacket messageResponsePacket
-                = new MessageResponsePacket(200, "服务端回复【" + messageRequestPacket.getMessage() + "】");
-
-        // 发送响应
-        channelHandlerContext.channel().writeAndFlush(messageResponsePacket);
+        Channel channel = SessionUtils.getChannelByUserName(userName);
+        if(channel == null){
+            // 接收人不在线, 给发送人发送信息
+            MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
+            messageResponsePacket.setCode(402);
+            messageResponsePacket.setMsg("当前用户不在线");
+            channelHandlerContext.channel().writeAndFlush(messageResponsePacket);
+        }else{
+            Session session = SessionUtils.getSession(channelHandlerContext.channel());
+            // 给接收人发送信息
+            MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
+            messageResponsePacket.setMsg(session.getUserName() + " -> " + messageDetail);
+            channel.writeAndFlush(messageResponsePacket);
+        }
     }
+
 }
