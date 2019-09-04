@@ -15,4 +15,9 @@ public class CommandVar {
      * 发送消息
      */
     public static final byte MESSAGE_COMMAND = 2;
+
+    /**
+     * 创建群
+     */
+    public static final byte CREATE_GROUP_COMMAND = 3;
 }

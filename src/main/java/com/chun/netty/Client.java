@@ -1,21 +1,18 @@
 package com.chun.netty;
 
+import com.chun.netty.console.ConsoleCommand;
+import com.chun.netty.console.ConsoleCommandFactory;
 import com.chun.netty.handler.PacketEncoder;
 import com.chun.netty.handler.ResponsePacketDecoder;
+import com.chun.netty.handler.response.CreateGroupResponseHandler;
 import com.chun.netty.handler.response.LoginResponseHandler;
 import com.chun.netty.handler.response.MessageResponseHandler;
 import com.chun.netty.packet.PacketSpliter;
-import com.chun.netty.packet.PacketUtils;
 import com.chun.netty.packet.request.LoginRequestPacket;
-import com.chun.netty.packet.request.MessageRequestPacket;
-import com.chun.netty.serializer.SerializerFactory;
-import com.chun.netty.util.LoginUtils;
-import com.chun.netty.util.Session;
 import com.chun.netty.util.SessionUtils;
 import com.chun.netty.var.AttributeVar;
 import com.chun.netty.var.CommonVar;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -59,6 +56,7 @@ public class Client {
                         socketChannel.pipeline().addLast(new PacketEncoder());
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
                         socketChannel.pipeline().addLast(new MessageResponseHandler());
+                        socketChannel.pipeline().addLast(new CreateGroupResponseHandler());
                     }
                 });
 
@@ -120,13 +118,11 @@ public class Client {
                     // 发送登录请求后，停顿一段时间，等待登录响应再执行 while
                     waitForLoginResponse();
                 }else{
-                    // 聊天
                     Scanner scanner = new Scanner(System.in);
                     String line = scanner.nextLine();
 
-                    MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
-                    messageRequestPacket.setMessage(line);
-                    channel.writeAndFlush(messageRequestPacket);
+                    ConsoleCommand command = ConsoleCommandFactory.getCommand(line);
+                    command.exec(scanner, channel);
                 }
             }
         }).start();

@@ -3,11 +3,21 @@ package com.chun.netty.packet.command;
 import com.chun.netty.packet.command.var.CommandTypeVar;
 import com.chun.netty.packet.command.var.CommandVar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @Author chun
  * @Date 2019/8/28 16:39
  */
 public class CommandFactory {
+
+    private static final Map<Byte, Command> commandMap = new HashMap<>();
+
+    static {
+        commandMap.put(CommandVar.LOGIN_COMMAND, new LoginCommand());
+        commandMap.put(CommandVar.MESSAGE_COMMAND, new MessageCommand());
+    }
 
     /**
      * 登录命令
@@ -26,15 +36,7 @@ public class CommandFactory {
      * @return
      */
     public static Command getCommand(byte command){
-        switch (command){
-            case CommandVar.LOGIN_COMMAND:
-                return loginCommand;
-            case CommandVar.MESSAGE_COMMAND:
-                return messageCommand;
-            default:
-                break;
-        }
-        return null;
+        return commandMap.get(command);
     }
 
 }
