@@ -30,4 +30,9 @@ public class CommandVar {
      * 列出群成员
      */
     public static final byte LIST_GROUP = 5;
+
+    /**
+     * 加入群聊
+     */
+    public static final byte JOIN_GROUP = 6;
 }

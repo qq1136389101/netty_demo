@@ -25,4 +25,9 @@ public class ConsoleCommandVar {
      * 列出群聊人员
      */
     public static final String LIST_GROUP = "4";
+
+    /**
+     * 加入群聊
+     */
+    public static final String JOIN_GROUP = "5";
 }

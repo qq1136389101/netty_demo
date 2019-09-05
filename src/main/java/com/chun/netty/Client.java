@@ -57,6 +57,7 @@ public class Client {
                         socketChannel.pipeline().addLast(new CreateGroupResponseHandler());
                         socketChannel.pipeline().addLast(new LogoutResponseHandler());
                         socketChannel.pipeline().addLast(new ListGroupResponseHandler());
+                        socketChannel.pipeline().addLast(new JoinGroupResponseHandler());
                     }
                 });
 
@@ -118,7 +119,12 @@ public class Client {
                     // 发送登录请求后，停顿一段时间，等待登录响应再执行 while
                     waitForLoginResponse();
                 }else{
-                    System.out.println("请输入操作命令: 1【创建群聊】, 2【发送消息】, 3【退出登录】, 4【显示群成员】");
+                    System.out.println("请输入操作命令: " +
+                            "1【创建群聊】, " +
+                            "2【发送消息】, " +
+                            "3【退出登录】, " +
+                            "4【显示群成员】，" +
+                            "5【加入群聊】");
                     Scanner scanner = new Scanner(System.in);
                     String line = scanner.nextLine();
 

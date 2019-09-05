@@ -19,6 +19,7 @@ public class ConsoleCommandFactory {
         commandMap.put(ConsoleCommandVar.SEND_MSG, new SendMsgConsoleCommand());
         commandMap.put(ConsoleCommandVar.LOGOUT, new LogoutConsoleCommand());
         commandMap.put(ConsoleCommandVar.LIST_GROUP, new ListGroupConsoleCommand());
+        commandMap.put(ConsoleCommandVar.JOIN_GROUP, new JoinGroupConsoleCommand());
     }
 
     /**
