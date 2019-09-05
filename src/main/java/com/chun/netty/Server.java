@@ -47,6 +47,7 @@ public class Server {
                     nioSocketChannel.pipeline().addLast(new LogoutRequestHandler());
                     nioSocketChannel.pipeline().addLast(new ListGroupRequestHandler());
                     nioSocketChannel.pipeline().addLast(new JoinGroupRequestHandler());
+                    nioSocketChannel.pipeline().addLast(new QuitGroupRequestHandler());
                 }
             });
 

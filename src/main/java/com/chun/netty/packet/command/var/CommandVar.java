@@ -35,4 +35,9 @@ public class CommandVar {
      * 加入群聊
      */
     public static final byte JOIN_GROUP = 6;
+
+    /**
+     * 退出群聊
+     */
+    public static final byte QUIT_GROUP = 7;
 }

@@ -25,10 +25,15 @@ public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGro
 
         // 处理请求
         ChannelGroup channelGroup = SessionUtils.getChannelGroupByGroupName(groupName);
-        channelGroup.add(channelHandlerContext.channel());
-
-        // 发送响应
-        JoinGroupResponsePacket joinGroupResponsePacket = new JoinGroupResponsePacket(200, "加入群【"+ groupName +"】成功");
-        channelHandlerContext.channel().writeAndFlush(joinGroupResponsePacket);
+        if(channelGroup == null){
+            // 未创建的群
+            JoinGroupResponsePacket joinGroupResponsePacket = new JoinGroupResponsePacket(200, "群【"+ groupName +"】未创建");
+            channelHandlerContext.channel().writeAndFlush(joinGroupResponsePacket);
+        }else{
+            channelGroup.add(channelHandlerContext.channel());
+            // 发送响应
+            JoinGroupResponsePacket joinGroupResponsePacket = new JoinGroupResponsePacket(200, "加入群【"+ groupName +"】成功");
+            channelHandlerContext.channel().writeAndFlush(joinGroupResponsePacket);
+        }
     }
 }

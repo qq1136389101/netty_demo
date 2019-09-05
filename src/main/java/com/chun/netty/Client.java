@@ -58,6 +58,7 @@ public class Client {
                         socketChannel.pipeline().addLast(new LogoutResponseHandler());
                         socketChannel.pipeline().addLast(new ListGroupResponseHandler());
                         socketChannel.pipeline().addLast(new JoinGroupResponseHandler());
+                        socketChannel.pipeline().addLast(new QuitGroupResponseHandler());
                     }
                 });
 
@@ -124,7 +125,8 @@ public class Client {
                             "2【发送消息】, " +
                             "3【退出登录】, " +
                             "4【显示群成员】，" +
-                            "5【加入群聊】");
+                            "5【加入群聊】，" +
+                            "6【退出群聊】");
                     Scanner scanner = new Scanner(System.in);
                     String line = scanner.nextLine();
 

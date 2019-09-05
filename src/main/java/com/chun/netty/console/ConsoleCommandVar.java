@@ -30,4 +30,9 @@ public class ConsoleCommandVar {
      * 加入群聊
      */
     public static final String JOIN_GROUP = "5";
+
+    /**
+     * 退出群聊
+     */
+    public static final String QUIT_GROUP = "6";
 }
