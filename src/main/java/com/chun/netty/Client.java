@@ -2,9 +2,9 @@ package com.chun.netty;
 
 import com.chun.netty.console.ConsoleCommand;
 import com.chun.netty.console.ConsoleCommandFactory;
-import com.chun.netty.handler.PacketEncoder;
-import com.chun.netty.handler.ResponsePacketDecoder;
-import com.chun.netty.handler.response.*;
+import com.chun.netty.handler.PacketResponseCodeHandler;
+import com.chun.netty.handler.response.IMResponseHandler;
+import com.chun.netty.handler.response.LoginResponseHandler;
 import com.chun.netty.packet.PacketSpliter;
 import com.chun.netty.packet.request.LoginRequestPacket;
 import com.chun.netty.util.SessionUtils;
@@ -47,9 +47,9 @@ public class Client {
                         socketChannel.pipeline().addLast(new PacketSpliter());
 
                         // 编码解码
-                        socketChannel.pipeline().addLast(new ResponsePacketDecoder());
-                        socketChannel.pipeline().addLast(new PacketEncoder());
+                        socketChannel.pipeline().addLast(PacketResponseCodeHandler.INSTANCE);
 
+                        // 业务处理
                         socketChannel.pipeline().addLast(LoginResponseHandler.INSTANCE);
                         socketChannel.pipeline().addLast(IMResponseHandler.INSTANCE);
                     }

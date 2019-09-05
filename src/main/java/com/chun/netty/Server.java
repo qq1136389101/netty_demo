@@ -32,9 +32,9 @@ public class Server {
                     nioSocketChannel.pipeline().addLast(new PacketSpliter());
 
                     // 编码解码
-                    nioSocketChannel.pipeline().addLast(new RequestPacketDecoder());
-                    nioSocketChannel.pipeline().addLast(new PacketEncoder());
+                    nioSocketChannel.pipeline().addLast(PacketRequestCodeHandler.INSTANCE);
 
+                    // 业务处理
                     nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
                     // AuthHandler 以下的 handler 都必须登录后才会执行
                     nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE);
