@@ -42,6 +42,7 @@ public class PacketVar {
         PACKET_CLASS.put(CommandVar.LIST_GROUP, ListGroupRequestPacket.class);
         PACKET_CLASS.put(CommandVar.JOIN_GROUP, JoinGroupRequestPacket.class);
         PACKET_CLASS.put(CommandVar.QUIT_GROUP, QuitGroupRequestPacket.class);
+        PACKET_CLASS.put(CommandVar.SEND_TO_GROUP, SendToGroupRequestPacket.class);
 
         // 响应
         RESPONSE_PACKET_CLASS.put(CommandVar.LOGIN_COMMAND, LoginResponsePacket.class);
@@ -51,5 +52,6 @@ public class PacketVar {
         RESPONSE_PACKET_CLASS.put(CommandVar.LIST_GROUP, ListGroupResponsePacket.class);
         RESPONSE_PACKET_CLASS.put(CommandVar.JOIN_GROUP, JoinGroupResponsePacket.class);
         RESPONSE_PACKET_CLASS.put(CommandVar.QUIT_GROUP, QuitGroupResponsePacket.class);
+        RESPONSE_PACKET_CLASS.put(CommandVar.SEND_TO_GROUP, SendToGroupResponsePacket.class);
     }
 }

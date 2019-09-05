@@ -35,4 +35,9 @@ public class ConsoleCommandVar {
      * 退出群聊
      */
     public static final String QUIT_GROUP = "6";
+
+    /**
+     * 发送到群
+     */
+    public static final String SEND_TO_GROUP = "7";
 }

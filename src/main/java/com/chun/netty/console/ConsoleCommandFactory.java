@@ -21,6 +21,7 @@ public class ConsoleCommandFactory {
         commandMap.put(ConsoleCommandVar.LIST_GROUP, new ListGroupConsoleCommand());
         commandMap.put(ConsoleCommandVar.JOIN_GROUP, new JoinGroupConsoleCommand());
         commandMap.put(ConsoleCommandVar.QUIT_GROUP, new QuitGroupConsoleCommand());
+        commandMap.put(ConsoleCommandVar.SEND_TO_GROUP, new SendToGroupConsoleCommand());
     }
 
     /**

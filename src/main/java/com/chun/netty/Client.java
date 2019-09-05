@@ -59,6 +59,7 @@ public class Client {
                         socketChannel.pipeline().addLast(new ListGroupResponseHandler());
                         socketChannel.pipeline().addLast(new JoinGroupResponseHandler());
                         socketChannel.pipeline().addLast(new QuitGroupResponseHandler());
+                        socketChannel.pipeline().addLast(new SendToGroupResponseHandler());
                     }
                 });
 
@@ -126,7 +127,8 @@ public class Client {
                             "3【退出登录】, " +
                             "4【显示群成员】，" +
                             "5【加入群聊】，" +
-                            "6【退出群聊】");
+                            "6【退出群聊】，" +
+                            "7【发送群消息】");
                     Scanner scanner = new Scanner(System.in);
                     String line = scanner.nextLine();
 
@@ -141,7 +143,7 @@ public class Client {
 
     private static void waitForLoginResponse() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (InterruptedException ignored) {
         }
     }

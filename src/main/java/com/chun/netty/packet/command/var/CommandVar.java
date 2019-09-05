@@ -40,4 +40,9 @@ public class CommandVar {
      * 退出群聊
      */
     public static final byte QUIT_GROUP = 7;
+
+    /**
+     * 发送消息到群
+     */
+    public static final byte SEND_TO_GROUP = 8;
 }
