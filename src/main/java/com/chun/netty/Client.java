@@ -2,7 +2,10 @@ package com.chun.netty;
 
 import com.chun.netty.console.ConsoleCommand;
 import com.chun.netty.console.ConsoleCommandFactory;
+import com.chun.netty.handler.HeartBeatTimerHandler;
+import com.chun.netty.handler.IMIdleStateHandler;
 import com.chun.netty.handler.PacketResponseCodeHandler;
+import com.chun.netty.handler.response.HeartBeatResponseHandler;
 import com.chun.netty.handler.response.IMResponseHandler;
 import com.chun.netty.handler.response.LoginResponseHandler;
 import com.chun.netty.packet.PacketSpliter;
@@ -43,13 +46,21 @@ public class Client {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel socketChannel) throws Exception {
+
+                        // 心跳检测
+                        socketChannel.pipeline().addLast(new IMIdleStateHandler());
+
                         // 拆包粘包解决， 注释该行会可能会解析 byteBuf 失败, 导致数组下标异常
                         socketChannel.pipeline().addLast(new PacketSpliter());
 
                         // 编码解码
                         socketChannel.pipeline().addLast(PacketResponseCodeHandler.INSTANCE);
 
+                        // 定时发送心跳
+                        socketChannel.pipeline().addLast(new HeartBeatTimerHandler());
+
                         // 业务处理
+                        socketChannel.pipeline().addLast(HeartBeatResponseHandler.INSTANCE);
                         socketChannel.pipeline().addLast(LoginResponseHandler.INSTANCE);
                         socketChannel.pipeline().addLast(IMResponseHandler.INSTANCE);
                     }

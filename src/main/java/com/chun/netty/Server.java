@@ -28,6 +28,9 @@ public class Server {
             .childHandler(new ChannelInitializer<NioSocketChannel>() {
                 @Override
                 protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
+                    // 心跳检测
+                    nioSocketChannel.pipeline().addLast(new IMIdleStateHandler());
+
                     // 拆包粘包解决， 注释该行会可能会解析 byteBuf 失败, 导致数组下标异常
                     nioSocketChannel.pipeline().addLast(new PacketSpliter());
 
@@ -35,6 +38,7 @@ public class Server {
                     nioSocketChannel.pipeline().addLast(PacketRequestCodeHandler.INSTANCE);
 
                     // 业务处理
+                    nioSocketChannel.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                     nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
                     // AuthHandler 以下的 handler 都必须登录后才会执行
                     nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE);

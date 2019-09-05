@@ -45,4 +45,9 @@ public class CommandVar {
      * 发送消息到群
      */
     public static final byte SEND_TO_GROUP = 8;
+
+    /**
+     * 心跳
+     */
+    public static final byte HEART_BEAT = 9;
 }
