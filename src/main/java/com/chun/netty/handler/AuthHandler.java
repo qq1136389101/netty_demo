@@ -4,6 +4,7 @@ import com.chun.netty.packet.response.MessageResponsePacket;
 import com.chun.netty.util.LoginUtils;
 import com.chun.netty.util.SessionUtils;
 import com.chun.netty.var.AttributeVar;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -11,7 +12,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @Author chun
  * @Date 2019/9/3 17:34
  */
+@ChannelHandler.Sharable
 public class AuthHandler extends ChannelInboundHandlerAdapter {
+
+    public static final AuthHandler INSTANCE = new AuthHandler();
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

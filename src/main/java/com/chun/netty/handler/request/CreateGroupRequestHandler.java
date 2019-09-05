@@ -7,6 +7,7 @@ import com.chun.netty.packet.response.MessageResponsePacket;
 import com.chun.netty.util.Session;
 import com.chun.netty.util.SessionUtils;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -22,7 +23,11 @@ import java.util.List;
  * @Author chun
  * @Date 2019/9/3 11:11
  */
+@ChannelHandler.Sharable
 public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
+
+    // 单例
+    public static final CreateGroupRequestHandler INSTANCE = new CreateGroupRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, CreateGroupRequestPacket createGroupRequestPacket) throws Exception {

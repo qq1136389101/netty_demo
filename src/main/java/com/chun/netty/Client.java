@@ -43,23 +43,15 @@ public class Client {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel socketChannel) throws Exception {
-                        // 原始方式
-//                        nioSocketChannel.pipeline().addLast(new ClientHandler());
-
-                        // 责任链模式
                         // 拆包粘包解决， 注释该行会可能会解析 byteBuf 失败, 导致数组下标异常
                         socketChannel.pipeline().addLast(new PacketSpliter());
 
+                        // 编码解码
                         socketChannel.pipeline().addLast(new ResponsePacketDecoder());
                         socketChannel.pipeline().addLast(new PacketEncoder());
-                        socketChannel.pipeline().addLast(new LoginResponseHandler());
-                        socketChannel.pipeline().addLast(new MessageResponseHandler());
-                        socketChannel.pipeline().addLast(new CreateGroupResponseHandler());
-                        socketChannel.pipeline().addLast(new LogoutResponseHandler());
-                        socketChannel.pipeline().addLast(new ListGroupResponseHandler());
-                        socketChannel.pipeline().addLast(new JoinGroupResponseHandler());
-                        socketChannel.pipeline().addLast(new QuitGroupResponseHandler());
-                        socketChannel.pipeline().addLast(new SendToGroupResponseHandler());
+
+                        socketChannel.pipeline().addLast(LoginResponseHandler.INSTANCE);
+                        socketChannel.pipeline().addLast(IMResponseHandler.INSTANCE);
                     }
                 });
 

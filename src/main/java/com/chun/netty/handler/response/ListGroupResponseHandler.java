@@ -7,6 +7,7 @@ import com.chun.netty.packet.response.ListGroupResponsePacket;
 import com.chun.netty.packet.response.LogoutResponsePacket;
 import com.chun.netty.util.Session;
 import com.chun.netty.util.SessionUtils;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -16,11 +17,15 @@ import java.util.List;
  * @Author chun
  * @Date 2019/9/3 11:11
  */
+@ChannelHandler.Sharable
 public class ListGroupResponseHandler extends SimpleChannelInboundHandler<ListGroupResponsePacket> {
+
+    // 单例
+    public static final ListGroupResponseHandler INSTANCE = new ListGroupResponseHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ListGroupResponsePacket listGroupResponsePacket) throws Exception {
-        System.out.println(123);
+
         if(listGroupResponsePacket.getCode() == 200){
             // 数据解析
             JSONObject jsonObject = (JSONObject) JSONObject.toJSON(listGroupResponsePacket.getData());

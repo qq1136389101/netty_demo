@@ -6,6 +6,7 @@ import com.chun.netty.packet.response.ListGroupResponsePacket;
 import com.chun.netty.packet.response.LoginResponsePacket;
 import com.chun.netty.util.Session;
 import com.chun.netty.util.SessionUtils;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -19,7 +20,11 @@ import java.util.Map;
  * @Author chun
  * @Date 2019/9/3 11:11
  */
+@ChannelHandler.Sharable
 public class ListGroupRequestHandler extends SimpleChannelInboundHandler<ListGroupRequestPacket> {
+
+    // 单例
+    public static final ListGroupRequestHandler INSTANCE = new ListGroupRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ListGroupRequestPacket listGroupRequestPacket) throws Exception {

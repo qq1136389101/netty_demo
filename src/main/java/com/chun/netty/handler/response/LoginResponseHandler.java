@@ -2,6 +2,7 @@ package com.chun.netty.handler.response;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.chun.netty.handler.request.MessageRequestHandler;
 import com.chun.netty.packet.request.LoginRequestPacket;
 import com.chun.netty.packet.request.MessageRequestPacket;
 import com.chun.netty.packet.response.LoginResponsePacket;
@@ -9,6 +10,7 @@ import com.chun.netty.util.LoginUtils;
 import com.chun.netty.util.Session;
 import com.chun.netty.util.SessionUtils;
 import com.chun.netty.var.AttributeVar;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -18,23 +20,11 @@ import java.util.UUID;
  * @Author chun
  * @Date 2019/9/3 11:11
  */
+@ChannelHandler.Sharable
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
 
-//    @Override
-//    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println("--------------- 客户端启动成功 ---------------");
-//
-//        // 封装登录对象
-//        LoginRequestPacket loginPacket = new LoginRequestPacket();
-//        loginPacket.setId(UUID.randomUUID().toString());
-//        loginPacket.setUserName("zhangsan");
-//        loginPacket.setPassword("123456");
-//
-//        // 发送登入请求
-//        System.out.println("向服务端发送登录请求");
-//        ctx.channel().writeAndFlush(loginPacket);
-//        ctx.fireChannelActive();
-//    }
+    // 单例
+    public static final LoginResponseHandler INSTANCE = new LoginResponseHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginResponsePacket loginResponsePacket) throws Exception {

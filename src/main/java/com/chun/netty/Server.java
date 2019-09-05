@@ -28,27 +28,17 @@ public class Server {
             .childHandler(new ChannelInitializer<NioSocketChannel>() {
                 @Override
                 protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-                    // 原始方式
-//                    nioSocketChannel.pipeline().addLast(new ServerHandler());
-
-                    // 责任链方式
                     // 拆包粘包解决， 注释该行会可能会解析 byteBuf 失败, 导致数组下标异常
                     nioSocketChannel.pipeline().addLast(new PacketSpliter());
 
+                    // 编码解码
                     nioSocketChannel.pipeline().addLast(new RequestPacketDecoder());
                     nioSocketChannel.pipeline().addLast(new PacketEncoder());
-                    nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
 
+                    nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
                     // AuthHandler 以下的 handler 都必须登录后才会执行
-                    nioSocketChannel.pipeline().addLast(new AuthHandler());
-
-                    nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
-                    nioSocketChannel.pipeline().addLast(new CreateGroupRequestHandler());
-                    nioSocketChannel.pipeline().addLast(new LogoutRequestHandler());
-                    nioSocketChannel.pipeline().addLast(new ListGroupRequestHandler());
-                    nioSocketChannel.pipeline().addLast(new JoinGroupRequestHandler());
-                    nioSocketChannel.pipeline().addLast(new QuitGroupRequestHandler());
-                    nioSocketChannel.pipeline().addLast(new SendToGroupRequestHandler());
+                    nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE);
+                    nioSocketChannel.pipeline().addLast(IMRequestHandler.INSTANCE);
                 }
             });
 

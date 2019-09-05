@@ -9,6 +9,7 @@ import com.chun.netty.util.Session;
 import com.chun.netty.util.SessionUtils;
 import com.chun.netty.var.AttributeVar;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -20,7 +21,10 @@ import java.util.UUID;
  * @Author chun
  * @Date 2019/9/3 11:11
  */
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginRequestPacket loginRequestPacket) throws Exception {

@@ -4,6 +4,7 @@ import com.chun.netty.packet.request.LogoutRequestPacket;
 import com.chun.netty.packet.response.LogoutResponsePacket;
 import com.chun.netty.util.Session;
 import com.chun.netty.util.SessionUtils;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -13,7 +14,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @Author chun
  * @Date 2019/9/3 11:11
  */
+@ChannelHandler.Sharable
 public class LogoutRequestHandler extends SimpleChannelInboundHandler<LogoutRequestPacket> {
+
+    // 单例
+    public static final LogoutRequestHandler INSTANCE = new LogoutRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LogoutRequestPacket logoutRequestPacket) throws Exception {
